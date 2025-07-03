@@ -1,0 +1,83 @@
+body {
+  background-color: #fefefe;
+  color: #333;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.dark-mode {
+  background-color: #121212 !important;
+  color: #f0f0f0 !important;
+}
+
+.container {
+  padding-top: 30px;
+}
+
+h1.pastel-title {
+  color: #6466f1;
+  font-weight: 700;
+}
+
+.test-card {
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+}
+
+.test-card:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.test-card.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.dark-mode .test-card {
+  background-color: #1e1e1e !important;
+  border-color: #333;
+  color: #e0e0e0;
+}
+
+.btn {
+  border-radius: 10px !important;
+  padding: 6px 14px;
+  font-weight: 500;
+}
+
+.progress-bar {
+  transition: width 0.6s ease;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.card {
+  border: none;
+  background: #f3f4fa;
+  border-radius: 20px;
+  box-shadow: 0 3px 10px rgba(100, 102, 241, 0.1);
+}
+
+.card .card-body {
+  text-align: center;
+}
+
+.dark-mode .card {
+  background: #1a1a2e;
+  color: #d1d1ff;
+}
+
+/* Fix expected label in dark mode */
+.expected-label {
+  color: #444;
+}
+.dark-mode .expected-label {
+  color: #ccc !important;
+}
+.dark-mode .text-muted {
+  color: #aaa !important;
+}
