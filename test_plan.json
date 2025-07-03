@@ -1,0 +1,811 @@
+{
+  "switches": [
+    {
+      "name": "Rudder Trim Switch",
+      "panel": "Flight Control Panel",
+      "tests": [
+        {
+            "Id": "RudderSwitchLeft",
+            "Picture": "RudderSwitchLeft.png",
+            "Text": "Turn rudder switch to the left",
+            "OPCNode": "ns=6;s=::AsGlobalPV:FCP.Input.RudderTrim",
+            "Expected":{"ChangeTo": "-1"},
+            "type": "input"
+        },
+        {
+            "Id": "Test3",
+            "Picture": "Test3.png",
+            "Text": "Bring rudder switch to the middle",
+            "OPCNode": "ns=6;s=::AsGlobalPV:FCP.Input.RudderTrim",
+            "Expected":{"ChangeTo": "0" },
+	          "type": "input"
+        },
+        {
+            "Id": "RudderSwitchRight",
+            "Picture": "RudderSwitchRight.png",
+            "Text": "Turn rudder switch to the right",
+            "OPCNode": "ns=6;s=::AsGlobalPV:FCP.Input.RudderTrim",
+            "Expected":{"ChangeTo": "1"},
+            "type": "input"
+        }
+    ]
+    },
+
+    {
+      "name": "FCS/ENG Reset Switch",
+      "panel": "Flight Control Panel",
+      "tests": [
+        {
+          "Id": "reset_test_off",
+          "Text": "Bring switch to 'OFF' mode",
+          "Picture": "fcs-engOFF.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:FCP.Input.FCS_ENG_Reset",
+	        "Expected": { "ChangeTo": "0" },
+          "type": "input"
+        },
+        {
+          "Id": "reset_test_reset",
+          "Text": "Bring switch to 'RESET' mode",
+          "Picture": "fcs-engRESET.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:FCP.Input.FCS_ENG_Reset" ,
+          "Expected": { "ChangeTo": "1" },
+          "type": "input"
+         }
+      ]
+    },
+
+     {
+      "name": "ICC1 Switch",
+      "panel": "PTMS Panel",
+      "tests": [
+        {
+          "Id": "ICC1_test_off",
+          "Text": "Push ICC1 switch down",
+          "Picture": "ICC1down.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:PTMS.Input.ICC1",
+          "Expected": { "ChangeTo": "0" },
+	        "type": "input"
+        },
+        {
+          "Id": "ICC1_test_on",
+          "Text": "Push ICC1 switch up",
+          "Picture": "ICC1up.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:PTMS.Input.ICC1" ,
+          "Expected": { "ChangeTo": "1" },
+	        "type": "input"
+        }
+      ]
+     },
+
+    {
+      "name": "ICC2 Switch",
+      "panel": "PTMS Panel",
+      "tests": [
+        {
+          "Id": "ICC2_test_off",
+          "Text": "Push ICC2 switch down",
+          "Picture": "ICC2down.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:PTMS.Input.ICC2",
+          "Expected": { "ChangeTo": "0" },
+          "type": "input"
+        },
+        {
+          "Id": "ICC2_test_on",
+          "Text": "Push ICC2 switch up",
+          "Picture": "ICC2up.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:PTMS.Input.ICC2",
+          "Expected": { "ChangeTo": "1" },
+          "type": "input"
+        }
+      ]
+     },
+
+    {
+      "name": "ICC3 Switch",
+      "panel": "PTMS Panel",
+      "tests": [
+        {
+          "Id": "ICC3_test_off",
+          "Text": "Drag ICC3 switch down",
+          "Picture": "ICC3down.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:PTMS.Input.ICC3",
+          "Expected": { "ChangeTo": "0" },
+          "type": "input"
+        },
+        {
+          "Id": "ICC3_test_on",
+          "Text": "Push ICC3 switch up",
+          "Picture": "ICC3up.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:PTMS.Input.ICC3",
+          "Expected": { "ChangeTo": "1" }, 
+          "type": "input"
+        }
+      ]
+     },
+
+    {
+      "name": "Cabin Pressure Switch",
+      "panel": "PTMS Panel",
+      "tests": [
+        {
+          "Id": "cabinpressure_test_dump",
+          "Text": "Rotate cabin pressure switch to 'DUMP'",
+          "Picture": "CabinPressureDUMP.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:PTMS.Input.CabinPressure",
+          "Expected": { "ChangeTo": "0" },
+          "type": "input"
+        },
+        {
+          "Id": "cabinpressure_test_norm",
+          "Text": "Rotate cabin pressure switch to 'NORM'",
+          "Picture": "CabinPressureNORM.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:PTMS.Input.CabinPressure",
+          "Expected": { "ChangeTo": "1" },
+          "type": "input"
+        },
+        {
+          "Id": "cabinpressure_test_ram",
+          "Text": "Rotate cabin pressure switch to 'RAM'",
+          "Picture": "CabinPressureRAM.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:PTMS.Input.CabinPressure",
+          "Expected": { "ChangeTo": "-1" },
+          "type": "input"
+        }
+
+      ]
+     },
+
+    {
+      "name": "IPP EMER OFF",
+      "panel": "PTMS Panel",
+      "tests": [
+        {
+          "Id": "IPPemer_test_1",
+          "Text": "Keep the IPP EMER OFF switch in normal state",
+          "Picture": "ippemerUNPUSHED.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:PTMS.Input.IPP_EmerOff",
+          "Expected": { "ChangeTo": "0" },
+          "type": "input"
+        },
+        {
+          "Id": "IPPemer_test_2",
+          "Text": "Push the IPP EMER OFF switch",
+          "Picture": "ippemerPUSHED.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:PTMS.Input.IPP_EmerOff",
+          "Expected": { "ChangeTo": "1" },
+          "type": "input"
+        }
+      ]
+     },
+
+    {
+      "name": "Battery Switch",
+      "panel": "PTMS Panel",
+      "tests": [
+        {
+          "Id": "batteryswitch_test_on",
+          "Text": "Bring switch to 'ON' position",
+          "Picture": "batteryswitchON.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:PTMS.Input.Battery",
+          "Expected": { "ChangeTo": "1"},
+          "type": "input"
+        },
+        {
+          "Id": "batteryswitch_test_2",
+          "Text": "Bring switch to 'OFF' position",
+          "Picture": "batteryswitchOFF.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:PTMS.Input.Battery",
+          "Expected": { "ChangeTo": "0"},
+          "type": "input"
+        },
+        {
+          "Id": "batteryswitch_test_3",
+          "Text": "Bring switch to 'TOW' position",
+          "Picture": "batteryswitchTOW.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:PTMS.Input.Battery",
+          "Expected": { "ChangeTo": "-1"},
+          "type": "input"
+        }
+      ]
+     },
+
+    {
+      "name": "IPP Switch",
+      "panel": "PTMS Panel",
+      "tests": [
+        {
+          "Id": "IPPswitch_test_off",
+          "Text": "Turn IPP switch to 'OFF'",
+          "Picture": "ippswitchOFF.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:PTMS.Input.IPP",
+          "Expected": { "ChangeTo": "0" },
+          "type": "input"
+        },
+        {
+          "Id": "IPPswitch_test_auto",
+          "Text": "Turn IPP switch to 'AUTO'",
+          "Picture": "ippswitchAUTO.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:PTMS.Input.IPP",
+          "Expected": { "ChangeTo": "1" },
+          "type": "input"
+        },
+        {
+          "Id": "IPPswitch_test_start",
+          "Text": "Turn IPP switch to 'START'",
+          "Picture": "ippswitchSTART.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:PTMS.Input.IPP",
+          "Expected": { "ChangeTo": "-1" },
+          "type": "input"
+        }
+
+      ]
+     },
+     {
+      "name": "PTMS Indicators",
+      "panel": "PTMS Panel",
+      "tests": [
+        {
+          "Id": "28VLowCheckON",
+          "Text": "Check that the 28V LOW LED is ON (RED)",
+          "Picture": "28V_LOW_ON.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:PTMS.Output.Low28V",
+          "Expected": { "ChangeTo": "1" },
+          "type": "output"
+        },
+        {
+          "Id": "28VLowCheckOFF",
+          "Text": "Check that the 28V LOW LED is OFF",
+          "Picture": "28V_LOW_ON.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:PTMS.Output.Low28V",
+          "Expected": { "ChangeTo": "0" },
+          "type": "output"
+        },
+        {
+          "Id": "28VDisCheckON",
+          "Text": "Check that the 28V DIS LED is ON (YELLOW)",
+          "Picture": "28V_DIS_ON.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:PTMS.Output.Dis28V",
+          "Expected": { "ChangeTo": "1" },
+          "type": "output"
+        },
+        {
+          "Id": "28VDisCheckOFF",
+          "Text": "Check that the 28V DIS LED is OFF",
+          "Picture": "28V_DIS_ON.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:PTMS.Output.Dis28V",
+          "Expected": { "ChangeTo": "0" },
+          "type": "output"
+        },
+        {
+          "Id": "270VLowCheckON",
+          "Text": "Check that the 270V LOW LED is ON (RED)",
+          "Picture": "270V_LOW_ON.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:PTMS.Output.Low270V",
+          "Expected": { "ChangeTo": "1" },
+          "type": "output"
+        },
+        {
+          "Id": "270VLowCheckOFF",
+          "Text": "Check that the 270V LOW LED is OFF",
+          "Picture": "270V_LOW_ON.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:PTMS.Output.Low270V",
+          "Expected": { "ChangeTo": "0" },
+          "type": "output"
+        },
+        {
+          "Id": "270VDisCheckON",
+          "Text": "Check that the 270V DIS LED is ON (YELLOW)",
+          "Picture": "270V_DIS_ON.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:PTMS.Output.Dis270V",
+          "Expected": { "ChangeTo": "1" },
+          "type": "output"
+        },
+        {
+          "Id": "270VDisCheckOFF",
+          "Text": "Check that the 270V DIS LED is OFF",
+          "Picture": "270V_DIS_ON.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:PTMS.Output.Dis270V",
+          "Expected": { "ChangeTo": "0" },
+          "type": "output"
+        },
+        {
+          "Id": "IPP_RunCheckON",
+          "Text": "Check that the IPP RUN LED is ON (GREEN)",
+          "Picture": "IPP_RunCHECK.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:PTMS.Output.IPP_Run",
+          "Expected": { "ChangeTo": "1" },
+          "type": "output"
+        },
+        {
+          "Id": "IPP_RunCheckOFF",
+          "Text": "Check that the IPP RUN LED is OFF",
+          "Picture": "IPP_RunCHECK.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:PTMS.Output.IPP_Run",
+          "Expected": { "ChangeTo": "0" },
+          "type": "output"
+        }
+      ]
+     },
+
+     {
+      "name": "VS BIT",
+      "panel": "Engine Panel",
+      "tests": [
+        {
+          "Id": "VSbit_test_1",
+          "Text": "Keep the VS BIT switch in normal state",
+          "Picture": "VSbitUNPUSHED.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:Engine.Input.VS_BIT",
+          "Expected": { "ChangeTo": "0" },
+          "type": "input"
+        },
+        {
+          "Id": "IPPemer_test_2",
+          "Text": "Push the VS BIT switch",
+          "Picture": "VSbitPUSHED.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:Engine.Input.VS_BIT",
+          "Expected": { "ChangeTo": "1" },
+          "type": "input"
+        }
+      ]
+     },
+     {
+      "name": "Engine Run",
+      "panel": "Engine Panel",
+      "tests": [
+        {
+          "Id": "EngineRun_test_1",
+          "Text": "Bring the Engine Run Switch to 'MOTOR'",
+          "Picture": "EngineRunMOTOR.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:Engine.Input.Engine",
+          "Expected": { "ChangeTo": "-1" },
+          "type": "input"
+        },
+        {
+          "Id": "EngineRun_test_2",
+          "Text": "Bring the Engine Run Switch to 'OFF'",
+          "Picture": "EngineRunOFF.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:Engine.Input.Engine",
+          "Expected": { "ChangeTo": "0" },
+          "type": "input"
+        },
+        {
+          "Id": "EngineRun_test_3",
+          "Text": "Bring the Engine Run Switch to 'RUN",
+          "Picture": "EngineRunRUN.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:Engine.Input.Engine",
+          "Expected": { "ChangeTo": "1" },
+          "type": "input"
+        }
+      ]
+     },
+
+     {
+      "name": "Jettison Rotary Switch",
+      "panel": "JETT BRAKE Control Panel",
+      "tests": [
+        {
+          "Id": "JettisonRotary_test_1",
+          "Text": "Bring the Jettison Rotary Switch to 'EXT'",
+          "Picture": "JettisonEXT.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:JETT_Brake.Input.JettisonSel",
+          "Expected": { "ChangeTo": "0" },
+          "type": "input"
+        },
+        {
+          "Id": "JettisonRotary_test_2",
+          "Text": "Bring the Jettison Rotary Switch to 'SEL'",
+          "Picture": "JettisonSEL.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:JETT_Brake.Input.JettisonSel",
+          "Expected": { "ChangeTo": "1" },
+          "type": "input"
+        },
+        {
+          "Id": "JettisonRotary_test_3",
+          "Text": "Bring the Engine Run Switch to 'ALL'",
+          "Picture": "JettisonALL.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:JETT_Brake.Input.JettisonSel",
+          "Expected": { "ChangeTo": "2" },
+          "type": "input"
+        }
+      ]
+     },
+     {
+      "name": "Jettison Push Switch",
+      "panel": "JETT BRAKE Control Panel",
+      "tests": [
+        {
+          "Id": "JettisonPush_unpushed",
+          "Text": "Keep the Jettison Push Button in normal state (Unpushed)",
+          "Picture": "JettisonUnpushed.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:JETT_Brake.Input.Jettison",
+          "Expected": { "ChangeTo": "0" },
+          "type": "input"
+        },
+        {
+          "Id": "JettisonRotary_test_2",
+          "Text": "Push the Jettison Push Button",
+          "Picture": "JettisonPushed.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:JETT_Brake.Input.Jettison",
+          "Expected": { "ChangeTo": "1" },
+          "type": "input"
+        }
+      ]
+     },
+     {
+      "name": "Parking Brake Switch",
+      "panel": "JETT BRAKE Control Panel",
+      "tests": [
+        {
+          "Id": "ParkingBrakeOFF",
+          "Text": "Bring Parking Brake Switch to 'OFF' state",
+          "Picture": "ParkingBrakeOFF.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:JETT_Brake.Input.Jettison",
+          "Expected": { "ChangeTo": "0" },
+          "type": "input"
+        },
+        {
+          "Id": "ParkingBrakeON",
+          "Text": "Bring Parking Brake Switch to 'ON' state",
+          "Picture": "ParkingBrakeON.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:JETT_Brake.Input.Jettison",
+          "Expected": { "ChangeTo": "1" },
+          "type": "input"
+        }
+      ]
+     },
+     {
+  	"name": "TOW Mode Indicators",
+	  "panel": "JETT BRAKE Control Panel",
+  	"tests": [
+   	 {
+      	     "Id": "tow_red_led_checkON",
+             "Text": "Check that the RED TOW LED is ON in tow mode",
+             "Picture": "tow_led_on.png",
+             "OPCNode": "ns=6;s=::AsGlobalPV:JETT_Brake.Output.TowLeft",
+             "Expected": {"ChangeTo": "1"},
+             "type": "output"
+   	 },
+      {
+      	     "Id": "tow_red_led_checkOFF",
+             "Text": "Check that the RED TOW LED is OFF",
+             "Picture": "tow_led_on.png",
+             "OPCNode": "ns=6;s=::AsGlobalPV:JETT_Brake.Output.TowLeft",
+             "Expected": {"ChangeTo": "0"},
+             "type": "output"
+   	  },
+    	{
+             "Id": "tow_yellow_led_checkON",
+             "Text": "Check that the YELLOW TOW LED is ON in tow mode",
+             "Picture": "tow_led_on.png",
+             "OPCNode": "ns=6;s=::AsGlobalPV:JETT_Brake.Output.TowCenter",
+             "Expected": {"ChangeTo": "1" },
+             "type": "output"
+    	},
+      {
+             "Id": "tow_yellow_led_checkOFF",
+             "Text": "Check that the YELLOW TOW LED is OFF",
+             "Picture": "tow_led_on.png",
+             "OPCNode": "ns=6;s=::AsGlobalPV:JETT_Brake.Output.TowCenter",
+             "Expected": {"ChangeTo": "0" },
+             "type": "output"
+    	},
+    	{
+             "Id": "tow_green_led_checkON",
+             "Text": "Check that the GREEN TOW LED is ON in tow mode",
+             "Picture": "tow_led_on.png",
+             "OPCNode": "ns=6;s=::AsGlobalPV:JETT_Brake.Output.TowRight",
+             "Expected": {"ChangeTo": "1" },
+             "type": "output"
+    	 },
+       {
+             "Id": "tow_green_led_checkOFF",
+             "Text": "Check that the GREEN TOW LED is OFF",
+             "Picture": "tow_led_on.png",
+             "OPCNode": "ns=6;s=::AsGlobalPV:JETT_Brake.Output.TowRight",
+             "Expected": {"ChangeTo": "0" },
+             "type": "output"
+    	 }
+  	]
+      },
+
+      {
+      "name": "Auto Recovery Switch",
+      "panel": "Auto Recovery Panel",
+      "tests": [
+        {
+          "Id": "AutoRecoveryOFF",
+          "Text": "Push the Auto Recovery Switch to 'OFF'",
+          "Picture": "AutoRecoveryOFF.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:AutoRecovery.Input.Recover",
+          "Expected": { "ChangeTo": "0" },
+          "type": "input"
+        },
+        {
+          "Id": "AutoRecoveryON",
+          "Text": "Push the Auto Recovery Switch to 'ON'",
+          "Picture": "AutoRecoveryON.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:AutoRecovery.Input.Recover",
+          "Expected": { "ChangeTo": "1" },
+          "type": "input"
+        }
+      ]
+     },
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+     {
+      "name": "Aircraft Zeroize Switch",
+      "panel": "Aircraft Zeroize Panel",
+      "tests": [
+        {
+          "Id": "AircraftZeroize_test_BYPASS",
+          "Text": "Bring the Aircraft Zeroize Switch to 'BYPASS'",
+          "Picture": "AircraftZeroizeBYPASS.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:AircraftZeroize.Input.Mode",
+          "Expected": { "ChangeTo": "0" },
+          "type": "input"
+        },
+        {
+          "Id": "AircraftZeroize_test_2",
+          "Text": "Bring the Aircraft Zeroize Switch to 'NORM'",
+          "Picture": "AircraftZeroizeNORM.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:AircraftZeroize.Input.Mode",
+          "Expected": { "ChangeTo": "1" },
+          "type": "input"
+        },
+        {
+          "Id": "AircraftZeroize_test_ZEROIZE",
+          "Text": "Bring the Aircraft Zeroize Switch to 'ZEROIZE'",
+          "Picture": "AircraftZeroizeZEROIZE.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:AircraftZeroize.Input.Mode",
+          "Expected": { "ChangeTo": "2" },
+          "type": "input"
+        }
+      ]
+     },
+
+     {
+      "name": "ALIGN Button",
+      "panel": "Standby Flight Display",
+      "tests": [
+        {
+          "Id": "ALIGN_unpushed",
+          "Text": "Keep the ALIGN Button in normal state (Unpushed)",
+          "Picture": "ALIGNUnpushed.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:SbyFD.Input.ALIGN",
+          "Expected": { "ChangeTo": "0" },
+          "type": "input"
+        },
+        {
+          "Id": "ALIGN_pushed",
+          "Text": "Push the ALIGN Button",
+          "Picture": "ALIGNPushed.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:SbyFD.Input.ALIGN",
+          "Expected": { "ChangeTo": "1" },
+          "type": "input"
+        }
+      ]
+     },
+     {
+      "name": "BRT Button",
+      "panel": "Standby Flight Display",
+      "tests": [
+        {
+          "Id": "BRT_unpushed",
+          "Text": "Keep the BRT Button in normal state (Unpushed)",
+          "Picture": "BRTUnpushed.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:SbyFD.Input.BRT",
+          "Expected": { "ChangeTo": "0" },
+          "type": "input"
+        },
+        {
+          "Id": "BRT_pushed",
+          "Text": "Push the BRT Button",
+          "Picture": "BRTPushed.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:SbyFD.Input.BRT",
+          "Expected": { "ChangeTo": "1" },
+          "type": "input"
+        }
+      ]
+     },
+     {
+      "name": "Knob",
+      "panel": "Standby Flight Display",
+      "tests": [
+        {
+          "Id": "knob_turn_left",
+          "Text": "Turn the knob to the left",
+          "Picture": "knob_left.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:SbyFD.Input.Knob",
+          "Expected": { "ChangeDirection": "decrease" },
+          "type": "input"
+        },
+        {
+          "Id": "knob_turn_right",
+          "Text": "Turn the knob to the right",
+          "Picture": "knob_right.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:SbyFD.Input.Knob",
+          "Expected": { "ChangeDirection": "increase" },
+          "type": "input"
+        }
+      ]
+     },
+
+     {
+      "name": "A Knob",
+      "panel": "Master Arm Panel",
+      "tests": [
+        {
+          "Id": "Aknob_turn_left",
+          "Text": "Turn the A knob to the left",
+          "Picture": "Aknob_left.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:MasterArm.Input.A_Outer",
+          "Expected": { "ChangeDirection": "decrease" },
+          "type": "input"
+        },
+        {
+          "Id": "Aknob_turn_right",
+          "Text": "Turn the A knob to the right",
+          "Picture": "Aknob_right.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:MasterArm.Input.A_Outer",
+          "Expected": { "ChangeDirection": "increase" },
+          "type": "input"
+        }
+      ]
+     },
+     {
+      "name": "B Knob",
+      "panel": "Master Arm Panel",
+      "tests": [
+        {
+          "Id": "Bknob_turn_left",
+          "Text": "Turn the B knob to the left",
+          "Picture": "Bknob_left.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:MasterArm.Input.B_Outer",
+          "Expected": { "ChangeDirection": "decrease" },
+          "type": "input"
+        },
+        {
+          "Id": "Bknob_turn_right",
+          "Text": "Turn the B knob to the right",
+          "Picture": "Bknob_right.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:MasterArm.Input.B_Outer",
+          "Expected": { "ChangeDirection": "increase" },
+          "type": "input"
+        }
+      ]
+     },
+     {
+      "name": "C/BUR Knob",
+      "panel": "Master Arm Panel",
+      "tests": [
+        {
+          "Id": "Cknob_turn_left",
+          "Text": "Turn the C/BUR knob to the left",
+          "Picture": "Cknob_left.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:MasterArm.Input.C_BUR_Outer",
+          "Expected": { "ChangeDirection": "decrease" },
+          "type": "input"
+        },
+        {
+          "Id": "Cknob_turn_right",
+          "Text": "Turn the C/BUR knob to the right",
+          "Picture": "Cknob_right.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:MasterArm.Input.C_BUR_Outer",
+          "Expected": { "ChangeDirection": "increase" },
+          "type": "input"
+        }
+      ]
+     },
+     {
+      "name": "Master Arm Switch",
+      "panel": "Master Arm Panel",
+      "tests": [
+        {
+          "Id": "MasterArm_test_off",
+          "Text": "Push Master Arm switch down",
+          "Picture": "MasterArmDown.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:MasterArm.Input.MasterArm",
+          "Expected": { "ChangeTo": "0" },
+	  "type": "input"
+        },
+        {
+          "Id": "MasterArm_test_on",
+          "Text": "Switch Master Arm switch up",
+          "Picture": "MasterArmUp.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:MasterArm.Input.MasterArm" ,
+          "Expected": { "ChangeTo": "1" },
+	        "type": "input"
+        }
+      ]
+     },
+
+     {
+      "name": "HOOK/STOVL Switch",
+      "panel": "Gear Panel",
+      "tests": [
+        {
+          "Id": "HOOK/STOVL_unpushed",
+          "Text": "Keep the HOOK/STOVL Switch in normal state (Unpushed)",
+          "Picture": "HOOK-STOVLUnpushed.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:Gear.Input.HOOK_STOVL",
+          "Expected": { "ChangeTo": "0" },
+          "type": "input"
+        },
+        {
+          "Id": "Hook/STOVL_pushed",
+          "Text": "Push the HOOK/STOVL Switch",
+          "Picture": "HOOK-STOVLPushed.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:Gear.Input.HOOK_STOVL",
+          "Expected": { "ChangeTo": "1" },
+          "type": "input"
+        }
+      ]
+     },
+     {
+      "name": "Landing Gear Override Switch",
+      "panel": "Gear Panel",
+      "tests": [
+        {
+          "Id": "LandingGearOverride_unpushed",
+          "Text": "Keep the Landing Gear Override Switch in normal state (Unpushed)",
+          "Picture": "LandingGearOverrideUnpushed.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:Gear.Input.GearOverride",
+          "Expected": { "ChangeTo": "0" },
+          "type": "input"
+        },
+        {
+          "Id": "LandingGearOverride_pushed",
+          "Text": "Push the Landing Gear Override Switch",
+          "Picture": "LandingGearOverridePushed.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:Gear.Input.GearOverride",
+          "Expected": { "ChangeTo": "1" },
+          "type": "input"
+        }
+      ]
+     },
+     {
+      "name": "Alt Gear Extension Switch",
+      "panel": "Gear Panel",
+      "tests": [
+        {
+          "Id": "AltGearExtension_unpushed",
+          "Text": "Keep the Alt Gear Extension Switch in normal state (Unpushed)",
+          "Picture": "AltGearExtensionUnpushed.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:Gear.Input.AltGearExtension",
+          "Expected": { "ChangeTo": "0" },
+          "type": "input"
+        },
+        {
+          "Id": "AltGearExtension_pushed",
+          "Text": "Push the Landing Gear Override Switch",
+          "Picture": "AltGearExtensionPushed.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:Gear.Input.AltGearExtension",
+          "Expected": { "ChangeTo": "1" },
+          "type": "input"
+        }
+      ]
+     }, 
+     {
+      "name": "Land Taxi Light Switch",
+      "panel": "Gear Panel",
+      "tests": [
+        {
+          "Id": "LandTaxiDown",
+          "Text": "Push Land/Taxi Light switch down",
+          "Picture": "LandTaxiDown.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:Gear.Input.TaxiLights",
+          "Expected": { "ChangeTo": "0" },
+	        "type": "input"
+        },
+        {
+          "Id": "LandTaxiUp",
+          "Text": "Push Land/Taxi Light switch up",
+          "Picture": "LandTaxiUp.png",
+          "OPCNode": "ns=6;s=::AsGlobalPV:Gear.Input.TaxiLights" ,
+          "Expected": { "ChangeTo": "1" },
+	        "type": "input"
+        }
+      ]
+     }
+  ]
+}
