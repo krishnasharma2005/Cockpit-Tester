@@ -1,0 +1,53 @@
+<!-- templates/index.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h3>Overall Progress</h3>
+  <div>
+    <a href="{{ url_for('reset_all') }}" class="btn btn-outline-danger me-2">Reset All</a>
+    <a href="{{ url_for('test_all') }}" class="btn btn-success">Test All</a>
+  </div>
+</div>
+<div class="progress" style="height: 20px; margin-bottom: 10px;">
+  <div id="overall-progress-bar" class="progress-bar bg-success" style="width: 0%; height: 100%;">
+  </div>
+</div>
+<small id="overall-progress-label">Progress: 0%</small>
+
+<script>
+function updateOverallProgressBar() {
+  fetch('/get_overall_progress')
+    .then(response => response.json())
+    .then(data => {
+      const bar = document.getElementById('overall-progress-bar');
+      const label = document.getElementById('overall-progress-label');
+      bar.style.width = data.progress + '%';
+      label.textContent = 'Progress: ' + data.progress + '%';
+    });
+}
+setInterval(updateOverallProgressBar, 5000);
+updateOverallProgressBar();
+</script>
+
+<h3>Select a Panel</h3>
+<div class="row">
+  {% for panel_name, tests in panels.items() %}
+    {% set passed = tests | selectattr('passed') | list | length %}
+    {% set total = tests | length %}
+    {% set is_complete = passed == total %}
+    <div class="col-md-4">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">
+            {{ panel_name }}
+            {% if is_complete %}<span class="badge bg-success float-end">✔️ Complete</span>{% endif %}
+          </h5>
+          <p class="card-text">{{ total }} tests</p>
+          <a href="{{ url_for('panel_view', panel_name=panel_name) }}" class="btn btn-primary">Manual Test</a>
+          <a href="{{ url_for('panel_view', panel_name=panel_name) }}?mode=auto" class="btn btn-outline-secondary ms-2">Auto Test</a>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}
