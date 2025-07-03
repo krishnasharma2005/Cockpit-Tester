@@ -1,0 +1,346 @@
+<!-- templates/panel.html -->
+
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center">
+  <h3>{{ panel }} Progress</h3>
+  <div>
+    <a href="/" class="btn btn-outline-secondary me-2">🏠 Home</a>
+    <form action="{{ url_for('reset_panel', panel_name=panel) }}?mode={{ mode }}" method="get" style="display:inline;">
+      <button class="btn btn-warning" type="submit">🔄 Reset Panel</button>
+    </form>
+  </div>
+</div>
+<div class="progress mb-4">
+  <div class="progress-bar" role="progressbar" id="panel-progress" style="width: {{ (passed/total)*100 }}%">
+    {{ passed }}/{{ total }} passed
+  </div>
+</div>
+
+{% if mode != 'auto' %}
+<div id="switches">
+  {% set switch_tests = {} %}
+  {% for test in tests %}
+    {% set _ = switch_tests.setdefault(test.switch_name, []).append(test) %}
+  {% endfor %}
+  {% for switch_name, test_list in switch_tests.items() %}
+    <div class="mb-5">
+      <h5 class="mb-3">Switch: <strong>{{ switch_name }}</strong></h5>
+      <div class="row">
+        {% for test in test_list %}
+          <div class="col-md-4">
+            <div class="test-card {% if not loop.first and not test_list[loop.index0 - 1].passed %}disabled{% endif %}" id="test-{{ test.Id }}">
+              <p><strong>{{ test.Text }}</strong></p>
+              <img src="{{ url_for('static', filename='images/' ~ test.Picture) }}" class="img-fluid my-2" style="max-height: 180px;">
+              {% if test.Expected.ChangeTo %}
+                <p class="expected-label"><strong>Expected:</strong> Change to <code>{{ test.Expected.ChangeTo }}</code></p>
+              {% elif test.Expected.ChangeDirection %}
+                <p class="expected-label"><strong>Expected:</strong> Value should <code>{{ test.Expected.ChangeDirection }}</code></p>
+              {% else %}
+                <p class="expected-label"><strong>Expected:</strong> —</p>
+              {% endif %}
+              <button class="btn btn-success" onclick="runTest('{{ test.Id }}', this)">Run Test</button>
+              {% if test.passed %}
+                <span class="badge bg-success ms-2" id="status-{{ test.Id }}">Passed</span>
+              {% else %}
+                <span class="badge bg-secondary ms-2" id="status-{{ test.Id }}">Pending</span>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if mode == 'auto' %}
+<div id="auto-tests" class="text-center"></div>
+<div id="complete" class="alert alert-success text-center" style="display:none;">
+  ✅ All tests in this panel are complete!<br>
+  <button class="btn btn-primary mt-2" onclick="confirmNextPanel()">Next Panel</button>
+</div>
+{% endif %}
+
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+const mode = urlParams.get('mode');
+
+function runTest(testId, btn) {
+  fetch(`/read/${testId}`)
+    .then(response => response.json())
+    .then(data => {
+      const status = document.getElementById(`status-${testId}`);
+      if (data.match) {
+        status.innerText = "Passed";
+        status.className = "badge bg-success ms-2";
+        btn.disabled = true;
+
+        const currentCard = document.getElementById(`test-${testId}`);
+        const currentCol = currentCard.closest('.col-md-4');
+        const nextCol = currentCol.nextElementSibling;
+
+        if (nextCol) {
+          const nextCard = nextCol.querySelector('.test-card');
+          if (nextCard) {
+            nextCard.classList.remove("disabled");
+          }
+        }
+
+        updateProgressBar();
+      } else {
+        status.innerText = "Failed";
+        status.className = "badge bg-danger ms-2";
+      }
+    });
+}
+
+function updateProgressBar() {
+  const panel = "{{ panel }}";  // Jinja variable for current panel name
+  fetch(`/panel_progress/${encodeURIComponent(panel)}`)
+    .then(res => res.json())
+    .then(data => {
+      if (!data.error) {
+        const bar = document.getElementById("panel-progress");
+        bar.style.width = data.progress_percent + "%";
+        bar.innerText = `${data.passed}/${data.total} passed`;
+      }
+    })
+    .catch(err => {
+      console.error("Failed to update progress bar:", err);
+    });
+}
+
+
+{% if mode == 'auto' %}
+const testPlan = [
+  {% for test in tests if not test.passed %}
+    {
+      Id: "{{ test.Id }}",
+      Text: "{{ test.Text|escape }}",
+      Picture: "{{ test.Picture }}",
+      Expected: {{ test.Expected|tojson }}
+    }{% if not loop.last %},{% endif %}
+  {% endfor %}
+];
+
+let currentTestIndex = 0;
+let skippedTests = [];
+
+function createTestCard(test) {
+  const container = document.getElementById("auto-tests");
+  container.innerHTML = ""; // Always start fresh
+
+    const card = document.createElement("div");
+    card.className = "test-card mx-auto";
+    card.style.maxWidth = "600px";
+
+    const expectedText = test.Expected.ChangeTo
+      ? `Change to <code>${test.Expected.ChangeTo}</code>`
+      : test.Expected.ChangeDirection
+      ? `Value should <code>${test.Expected.ChangeDirection}</code>`
+      : "—";
+
+    card.innerHTML = `
+      <h5>${test.Text}</h5>
+      <img src="/static/images/${test.Picture}" class="img-fluid my-2" style="max-height: 300px;">
+      <p class="expected-label"><strong>Expected:</strong> ${expectedText}</p>
+      <p id="result-${test.Id}" class="text-muted">🔍 Waiting for match...</p>
+      <button class="btn btn-warning mt-2" onclick="skipTest()">⏭ Skip</button>
+    `;
+    container.appendChild(card);
+    card.scrollIntoView({ behavior: "smooth", block: "center" });
+
+    poll(); // for input-based test
+  }
+
+
+
+
+function skipTest() {
+  skippedTests.push(testPlan[currentTestIndex]);
+  currentTestIndex++;
+  if (testPlan[currentTestIndex]) {
+    createTestCard(testPlan[currentTestIndex]);
+  } else if (skippedTests.length > 0) {
+    testPlan.push(...skippedTests);
+    skippedTests = [];
+    createTestCard(testPlan[currentTestIndex]);
+  } else {
+    document.getElementById("complete").style.display = "block";
+  }
+}
+
+function poll() {
+  const test = testPlan[currentTestIndex];
+  if (!test) {
+    document.getElementById("complete").style.display = "block";
+    return;
+  }
+
+  fetch(`/read/${test.Id}`)
+    .then(res => res.json())
+    .then(data => {
+      const resEl = document.getElementById("result-" + test.Id);
+      if (data.match) {
+        resEl.innerText = "✅ Passed!";
+        currentTestIndex++;
+        updateProgressBar();
+        setTimeout(() => {
+          if (testPlan[currentTestIndex]) {
+            createTestCard(testPlan[currentTestIndex]);
+            poll();
+          } else if (skippedTests.length > 0) {
+            testPlan.push(...skippedTests);
+            skippedTests = [];
+            createTestCard(testPlan[currentTestIndex]);
+            poll();
+          } else {
+            document.getElementById("complete").style.display = "block";
+          }
+        }, 1000);
+      } else {
+        resEl.innerText = `❌ Waiting...`;
+        setTimeout(poll, 1000);
+      }
+    })
+    .catch(err => {
+      console.error("Polling error:", err);
+      setTimeout(poll, 2000);
+    });
+}
+
+function confirmNextPanel() {
+  if (confirm("Move to next panel?")) {
+    fetch(`/next-panel?current={{ panel }}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.next) {
+          window.location.href = `/panel/${data.next}?mode=auto`;
+        } else {
+          alert("All panels complete!");
+        }
+      });
+  }
+}
+
+function confirmOutput(testId) {
+  fetch(`/confirm/${testId}`, { method: 'POST' })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        const badge = document.getElementById(`status-${testId}`);
+        badge.innerText = "Passed";
+        badge.className = "badge bg-success ms-2";
+        document.querySelector(`#test-${testId} button`).disabled = true;
+        // Unlock next card if any
+        const currentCard = document.getElementById(`test-${testId}`);
+        const currentCol = currentCard.closest('.col-md-4');
+        const nextCol = currentCol.nextElementSibling;
+        if (nextCol) {
+          const nextCard = nextCol.querySelector('.test-card');
+          if (nextCard) nextCard.classList.remove("disabled");
+        }
+        updateProgressBar();
+      }
+    });
+}
+
+function confirmAutoOutput(testId) {
+  fetch(`/confirm/${testId}`, { method: 'POST' })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        document.getElementById(`result-${testId}`).innerText = "✅ Passed!";
+        currentTestIndex++;
+        updateProgressBar();
+        setTimeout(() => {
+          if (testPlan[currentTestIndex]) {
+            createTestCard(testPlan[currentTestIndex]);
+            poll();
+          } else {
+            document.getElementById("complete").style.display = "block";
+          }
+        }, 1000);
+      }
+    });
+}
+
+function runOutputTestPhases(test) {
+  const container = document.getElementById("auto-tests");
+  container.innerHTML = "";
+  const card = document.createElement("div");
+  card.className = "test-card mx-auto";
+  card.style.maxWidth = "600px";
+
+  card.innerHTML = `
+    <h5>${test.Text}</h5>
+    <img src="/static/images/${test.Picture}" class="img-fluid my-2" style="max-height: 300px;">
+    <p class="expected-label"><strong>Expected:</strong> Light should turn ON</p>
+    <button class="btn btn-success mt-2" onclick="confirmOutputPhase('${test.Id}', 'on')">✅ Yes, it's ON</button>
+  `;
+  container.appendChild(card);
+
+  // Write ON value to PLC
+  fetch("/output-step", {
+    method: "POST",
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify({ test_id: test.Id, phase: "on" })
+  });
+}
+
+function confirmOutputPhase(testId, phase) {
+  if (phase === "on") {
+    // Show step 2 — send 0
+    fetch("/output-step", {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({ test_id: testId, phase: "off" })
+    });
+
+    const container = document.getElementById("auto-tests");
+    container.innerHTML = `
+      <div class="test-card mx-auto" style="max-width:600px;">
+        <p class="expected-label"><strong>Expected:</strong> Light should turn OFF</p>
+        <button class="btn btn-success mt-2" onclick="confirmOutputPhase('${testId}', 'off')">✅ Yes, it's OFF</button>
+      </div>
+    `;
+  } else {
+    // Test is complete
+    fetch(`/confirm/${testId}`, { method: "POST" })
+      .then(() => {
+        currentTestIndex++;
+        updateProgressBar();
+        setTimeout(() => {
+          if (testPlan[currentTestIndex]) {
+            createTestCard(testPlan[currentTestIndex]);
+          } else {
+            document.getElementById("complete").style.display = "block";
+          }
+        }, 500);
+      });
+  }
+}
+
+function activateOutputManual(testId) {
+  fetch("/output-step", {
+    method: "POST",
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify({ test_id: testId, phase: "on" })
+  }).then(res => res.json()).then(data => {
+    if (data.success) {
+      const btn = document.getElementById(`confirm-${testId}`);
+      if (btn) btn.disabled = false;
+    }
+  });
+}
+
+window.onload = function () {
+  if (testPlan.length > 0) {
+    createTestCard(testPlan[0]);
+    poll();
+  }
+}
+{% endif %}
+</script>
+{% endblock %}
